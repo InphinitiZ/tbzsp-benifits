@@ -1,11 +1,6 @@
 import sys
 import numpy
-
-def multiListSelp(lst):
-    s = 1
-    for i in lst:
-        s *= i
-    return s
+from functools import reduce
 
 def optBet(lstMoneyRaw, lstSps, littleCoin, offsetCoinNum):
     if offsetCoinNum == 0:
@@ -43,7 +38,7 @@ if len(tempCoin) != 0:
 moneyPart = []
 for i in range(0, len(sps)):
     tempOtherSps = sps[0:i] + sps[i+1:len(sps)]
-    moneyPart.append(multiListSelp(tempOtherSps))
+    moneyPart.append(reduce(lambda x , y : x * y, tempOtherSps))
 print(moneyPart)
 
 totalHave = input("Input total bean, default is 10000: ")
