@@ -32,18 +32,15 @@ def optBet(lstMoneyRaw, lstSps, littleCoin, offsetCoinNum):
     return optBet(lstMoneyRaw, lstSps, littleCoin, offsetCoinNum - ajustMoney // littleCoin)
 
 
-sps = []
-tempSp = float(input("Input sp, end with nonpositive number: "))
-while tempSp > 0:
-    sps.append(tempSp)
-    tempSp = float(input("Input sp, end with nonpositive number: "))
+tempSpStr = input("Input sps, use space to separate(like 2.1 1.8 ....): ")
+sps = [float(sp) for sp in tempSpStr.split(' ')]
+
 littleCoin = 100
 tempCoin = input("Input little coin, default is 100: ")
 if len(tempCoin) != 0:
     littleCoin = int(tempCoin)
 
 moneyPart = []
-
 for i in range(0, len(sps)):
     tempOtherSps = sps[0:i] + sps[i+1:len(sps)]
     moneyPart.append(multiListSelp(tempOtherSps))
@@ -55,16 +52,12 @@ if len(totalHave) == 0:
 else:
     totalHave = int(totalHave)
 
-moneyRaw = []
-for x in moneyPart:
-    moneyRaw.append(int(round(x * totalHave // sum(moneyPart) // littleCoin)) * littleCoin)
+moneyRaw = [int(round(x * totalHave // sum(moneyPart) // littleCoin)) * littleCoin for x in moneyPart]
 
 offsetCoinNum = (totalHave - sum(moneyRaw)) // littleCoin
 money = optBet(moneyRaw, sps, littleCoin, offsetCoinNum)
 print(money)
 print("Bet total:", sum(money))
 
-earn = []
-for i in range(0, len(moneyRaw)):
-    earn.append(int(round(sps[i] * money[i])))
+earn = [int(round(sps[i] * money[i])) for i in range(0, len(moneyRaw))]
 print("Earn:", earn)
